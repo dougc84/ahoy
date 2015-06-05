@@ -1,6 +1,5 @@
 require "addressable/uri"
 require "browser"
-require "geocoder"
 require "referer-parser"
 require "request_store"
 require "ahoy/version"

@@ -3,8 +3,8 @@
 (function (window) {
   "use strict";
 
+  var debugMode = false;
   var options = window.Ahoy || {};
-  var debugMode = options.debugMode || false;
   var $ = window.jQuery || window.$;
   var visitToken, visitorToken;
   var visitTtl, visitorTtl;

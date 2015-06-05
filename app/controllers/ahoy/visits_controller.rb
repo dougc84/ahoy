@@ -1,5 +1,7 @@
 module Ahoy
-  class VisitsController < ActionController::Base
+  class VisitsController < ApplicationController
+    skip_filter *_process_action_callbacks.map(&:filter)
+    
     before_filter :halt_bots
 
     def create

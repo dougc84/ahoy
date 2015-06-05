@@ -1,7 +1,7 @@
 module Ahoy
   class VisitsController < ApplicationController
     skip_filter *_process_action_callbacks.map(&:filter)
-    
+
     before_filter :halt_bots
 
     def create
@@ -17,7 +17,7 @@ module Ahoy
         end
 
       visit.save!
-      render json: {id: visit.id}
+      render json: { visit_token: visit.visit_token, visitor_token: visit.visitor_token }
     end
 
     protected

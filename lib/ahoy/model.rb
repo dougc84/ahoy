@@ -9,7 +9,6 @@ module Ahoy
         before_create :set_traffic_source
         before_create :set_utm_parameters
         before_create :set_technology
-        before_create :set_location
 
         def set_traffic_source
           referring_domain = Addressable::URI.parse(referrer).host.first(255) rescue nil
@@ -38,55 +37,40 @@ module Ahoy
             self.browser = browser.name if respond_to?(:browser=)
 
             # TODO add more
-            self.os =
-              if browser.android?
-                "Android"
-              elsif browser.ios?
-                "iOS"
-              elsif browser.windows_phone?
-                "Windows Phone"
-              elsif browser.blackberry?
-                "Blackberry"
-              elsif browser.chrome_os?
-                "Chrome OS"
-              elsif browser.mac?
-                "Mac"
-              elsif browser.windows?
-                "Windows"
-              elsif browser.linux?
-                "Linux"
-              end if respond_to?(:os=)
+            if respond_to?(:os=)
+              self.os =
+                if browser.android?
+                  "Android"
+                elsif browser.ios?
+                  "iOS"
+                elsif browser.windows_phone?
+                  "Windows Phone"
+                elsif browser.blackberry?
+                  "Blackberry"
+                elsif browser.chrome_os?
+                  "Chrome OS"
+                elsif browser.mac?
+                  "Mac"
+                elsif browser.windows?
+                  "Windows"
+                elsif browser.linux?
+                  "Linux"
+                end
+            end
 
-            self.device_type =
-              if browser.tv?
-                "TV"
-              elsif browser.console?
-                "Console"
-              elsif browser.tablet?
-                "Tablet"
-              elsif browser.mobile?
-                "Mobile"
-              else
-                "Desktop"
-              end if respond_to?(:device_type=)
-          end
-          true
-        end
-
-        def set_location
-          if respond_to?(:ip) and [:country=, :region=, :city=].any?{|method| respond_to?(method) }
-            location =
-              begin
-                Geocoder.search(ip).first
-              rescue => e
-                $stderr.puts e.message
-                nil
-              end
-
-            if location
-              self.country = location.country.presence if respond_to?(:country=)
-              self.region = location.state.presence if respond_to?(:region=)
-              self.city = location.city.presence if respond_to?(:city=)
+            if respond_to?(:device_type=)
+              self.device_type =
+                if browser.tv?
+                  "TV"
+                elsif browser.console?
+                  "Console"
+                elsif browser.tablet?
+                  "Tablet"
+                elsif browser.mobile?
+                  "Mobile"
+                else
+                  "Desktop"
+                end
             end
           end
           true
